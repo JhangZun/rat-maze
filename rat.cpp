@@ -17,7 +17,7 @@ struct Position {
 // Directions: up, down, left, right
 const vector<pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
-// Function to check if a position is within bounds and valid
+// Function to check if a position is within bounds, valid, and not a wall
 bool isValid(int x, int y, const vector<vector<int>>& maze, const vector<vector<bool>>& visited) {
     int n = maze.size();
     return x >= 0 && y >= 0 && x < n && y < n && maze[x][y] == 1 && !visited[x][y];
@@ -64,14 +64,14 @@ void printMazeWithRealTimeUpdates(const vector<vector<int>>& maze, const vector<
 }
 
 // Function to solve the maze with real-time updates and cheese
-bool solveRatMazeWithUpdates(const vector<vector<int>>& maze, const pair<int, int>& cheese) {
+bool solveRatMazeWithUpdates(const vector<vector<int>>& maze, const pair<int, int>& cheese, const pair<int, int>& start) {
     int n = maze.size();
     vector<vector<bool>> visited(n, vector<bool>(n, false));
     stack<Position> s;
 
     // Push starting position
-    s.push({0, 0, {{0, 0}}, 0});
-    visited[0][0] = true;
+    s.push({start.first, start.second, {{start.first, start.second}}, 0});
+    visited[start.first][start.second] = true;
 
     while (!s.empty()) {
         Position current = s.top();
@@ -111,25 +111,51 @@ bool solveRatMazeWithUpdates(const vector<vector<int>>& maze, const pair<int, in
     return false;
 }
 
+// Function to input the rat and cheese positions with validation
+void inputPositions(pair<int, int>& start, pair<int, int>& cheese, const vector<vector<int>>& maze) {
+    int n = maze.size();
+
+    // Input the rat's starting position with validation
+    cout << "Enter the rat's starting position (row and column): ";
+    cin >> start.first >> start.second;
+
+    while (start.first < 0 || start.first >= n || start.second < 0 || start.second >= n || maze[start.first][start.second] == 0) {
+        cout << "Invalid position! Please enter a valid position on an open path: ";
+        cin >> start.first >> start.second;
+    }
+
+    // Input the cheese position with validation
+    cout << "Enter the cheese position (row and column): ";
+    cin >> cheese.first >> cheese.second;
+
+    while (cheese.first < 0 || cheese.first >= n || cheese.second < 0 || cheese.second >= n || maze[cheese.first][cheese.second] == 0 || (start.first == cheese.first && start.second == cheese.second)) {
+        cout << "Invalid cheese position! Please enter a valid position on an open path (not the same as the rat's position): ";
+        cin >> cheese.first >> cheese.second;
+    }
+}
+
 int main() {
-    // Example Larger Maze with Cheese position
+    // Predefined maze (5x5 example)
     vector<vector<int>> maze = {
-        {1, 0, 1, 1, 1, 0, 1},
-        {1, 1, 1, 0, 1, 0, 1},
-        {0, 0, 1, 0, 1, 1, 1},
-        {1, 1, 1, 1, 0, 0, 0},
-        {1, 0, 0, 1, 1, 1, 1},
-        {1, 1, 0, 0, 0, 0, 1},
-        {1, 1, 1, 1, 1, 1, 1},
+        {1, 0, 1, 1, 1},
+        {1, 1, 1, 0, 1},
+        {0, 0, 1, 0, 1},
+        {1, 1, 1, 1, 1},
+        {1, 0, 0, 0, 1}
     };
 
-    // Define the position of the cheese (C)
-    pair<int, int> cheese = {6, 6};  // Bottom-right corner (cheese location)
+    int n = maze.size();  // Fixed maze size
 
-    bool found = solveRatMazeWithUpdates(maze, cheese);
+    pair<int, int> start, cheese;
+
+    // Input the rat and cheese positions
+    inputPositions(start, cheese, maze);
+
+    bool found = solveRatMazeWithUpdates(maze, cheese, start);
 
     // Wait for user input before closing the program
     cout << "\nPress Enter to exit...";
     cin.ignore();
+    cin.get();
     return 0;
 }
