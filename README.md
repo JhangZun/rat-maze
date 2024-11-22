@@ -20,3 +20,46 @@ This project is a simple C++ program that implements a rat maze solver using a s
 
    ```bash
    g++ -o rat rat.cpp
+
+3. **Run the Program**:
+   After compilation, run the program from the command line.
+
+   ```bash
+   ./rat
+
+4. **Provide Input**:
+   The program will prompt you to enter the starting position of the rat and the position of the cheese. Enter the row and column    coordinates for both, ensuring they are on open paths and are valid positions within the maze.
+
+   Example:
+   
+   ```plaintext
+   Enter the rat's starting position (row and column): 0 0
+   Enter the cheese position (row and column): 4 4
+5. **View the Output**:
+   The maze will be displayed in real-time, showing the rat's path and its movement towards the cheese. Once the rat finds the cheese, the program will print the number of steps it took to reach the cheese.
+
+   Example Output:
+
+   ```plaintext
+   The rat found the cheese in 10 steps!
+
+   Press Enter to exit...
+# Visualize the Process
+   Here’s a GIF showing the rat solving the maze:
+
+   ![Rat Maze Solver GIF](https://github.com/JhangZun/rat-maze/blob/main/rat_maze.gif)
+
+# Code Overview
+   - **DFS Algorithm**:
+        The program uses a stack to explore the maze using a depth-first search strategy.
+   - **Maze Representation**:
+        The maze is represented by a 2D array of integers, where 1 represents open paths and 0 represents walls.
+   - **Visualization**:
+        The maze is visualized by printing it in the terminal, and the rat's position is updated as it moves.
+
+# Dependencies
+   - **No external libraries**: 
+      The program is implemented using standard C++ libraries only.
+   
+> [!NOTE]
+> Feel free to use my code as you want.
